@@ -1,0 +1,58 @@
+{
+  "phase": "http_request_cache_settings",
+  "rules": [
+    {
+      "description": "Jangan cache API (form kontak dan endpoint lain)",
+      "expression": "(starts_with(http.request.uri.path, \"/api/\"))",
+      "action": "set_cache_settings",
+      "action_parameters": {
+        "cache": false
+      }
+    },
+    {
+      "description": "Aset build Next.js (nama file ber-hash, aman di-cache lama)",
+      "expression": "(starts_with(http.request.uri.path, \"/_next/static/\"))",
+      "action": "set_cache_settings",
+      "action_parameters": {
+        "cache": true,
+        "edge_ttl": { "mode": "override_origin", "default": 31536000 },
+        "browser_ttl": { "mode": "respect_origin" }
+      }
+    },
+    {
+      "description": "Optimasi gambar Next.js (/_next/image)",
+      "expression": "(starts_with(http.request.uri.path, \"/_next/image\"))",
+      "action": "set_cache_settings",
+      "action_parameters": {
+        "cache": true,
+        "edge_ttl": { "mode": "override_origin", "default": 86400 },
+        "browser_ttl": { "mode": "respect_origin" }
+      }
+    },
+    {
+      "description": "Gambar, font, dan ikon di folder public",
+      "expression": "(http.request.uri.path.extension in {\"svg\" \"jpg\" \"jpeg\" \"png\" \"webp\" \"avif\" \"ico\" \"woff\" \"woff2\" \"ttf\" \"otf\" \"css\" \"js\"})",
+      "action": "set_cache_settings",
+      "action_parameters": {
+        "cache": true,
+        "edge_ttl": { "mode": "override_origin", "default": 604800 },
+        "browser_ttl": { "mode": "respect_origin" }
+      }
+    },
+    {
+      "description": "File SEO dan AdSense: cache singkat supaya perubahan cepat terbaca",
+      "expression": "(http.request.uri.path in {\"/robots.txt\" \"/sitemap.xml\" \"/ads.txt\" \"/manifest.json\"})",
+      "action": "set_cache_settings",
+      "action_parameters": {
+        "cache": true,
+        "edge_ttl": { "mode": "override_origin", "default": 3600 },
+        "browser_ttl": { "mode": "respect_origin" }
+      }
+    }
+  ],
+  "catatan": [
+    "HTML tidak punya aturan cache. Layout memakai force-dynamic dan nonce CSP per request, jadi HTML sengaja tidak di-cache di edge.",
+    "Urutan penting: aturan /api/ ditaruh pertama. Cek hasil di Caching > Cache Rules setelah diterapkan.",
+    "Format ini mengikuti pola cf-waf-rules.json dan cf-ratelimit.json, dan memakai field phase/action_parameters dari Rulesets API. Belum diuji ke zona live."
+  ]
+}

@@ -1,0 +1,25 @@
+# Crawler AI, scraper, dan SEO tool diminta tidak mengindeks situs ini.
+# Pemblokiran sebenarnya dilakukan di middleware.js; baris ini hanya sinyal untuk bot yang patuh.
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: CCBot
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: Google-Extended
+User-agent: Bytespider
+User-agent: PerplexityBot
+User-agent: AhrefsBot
+User-agent: SemrushBot
+User-agent: MJ12bot
+User-agent: DotBot
+User-agent: PetalBot
+Disallow: /
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /api/
+Disallow: /private/
+
+Sitemap: https://bagasramandani.net/sitemap.xml

@@ -1,0 +1,19 @@
+{
+  "rules": [
+    {
+      "action": "block",
+      "description": "Block scraper dan library HTTP",
+      "expression": "(http.user_agent contains \"AhrefsBot\") or (http.user_agent contains \"SemrushBot\") or (http.user_agent contains \"MJ12bot\") or (http.user_agent contains \"GPTBot\") or (http.user_agent contains \"ClaudeBot\") or (http.user_agent contains \"python-requests\") or (http.user_agent contains \"curl/\") or (http.user_agent contains \"wget\")"
+    },
+    {
+      "action": "block",
+      "description": "Block User-Agent kosong",
+      "expression": "(http.user_agent eq \"\")"
+    },
+    {
+      "action": "block",
+      "description": "Block probe file sensitif",
+      "expression": "(http.request.uri.path contains \"/.env\") or (http.request.uri.path contains \"/.git/\") or (http.request.uri.path contains \"wp-admin\") or (http.request.uri.path contains \"phpmyadmin\")"
+    }
+  ]
+}

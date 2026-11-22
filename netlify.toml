@@ -1,0 +1,21 @@
+# Konfigurasi deploy Netlify untuk bagasramandani.net
+# Netlify mendeteksi Next.js secara otomatis, jadi publish dibiarkan kosong.
+
+[build]
+  command = "npm run build"
+
+[build.environment]
+  # package.json mensyaratkan Node >= 20.9.0
+  NODE_VERSION = "22"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+# Domain kanonik: bagasramandani.net (apex). www dialihkan ke apex.
+[[redirects]]
+  from = "https://www.bagasramandani.net/*"
+  to = "https://bagasramandani.net/:splat"
+  status = 301
+  force = true
+
+# Env var (RESEND_API_KEY, CONTACT_TO_EMAIL, CONTACT_FROM_EMAIL) diisi di
+# Netlify UI: Site configuration -> Environment variables. JANGAN ditulis di file ini.
+# TRUST_CLOUDFLARE=true diisi setelah Cloudflare aktif di depan Netlify.
